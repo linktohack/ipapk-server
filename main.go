@@ -7,7 +7,6 @@ import (
 	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/middleware"
 	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/models"
 	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/templates"
-	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/utils"
 	"log"
 	"net/http"
 	"os"
@@ -19,10 +18,6 @@ func Init() {
 	_, err := os.Stat(".data")
 	if os.IsNotExist(err) {
 		os.MkdirAll(".data", 0755)
-	}
-
-	if err := utils.InitCA(); err != nil {
-		log.Fatal(err)
 	}
 
 	if err := conf.InitConfig("config.json"); err != nil {
@@ -62,7 +57,7 @@ func main() {
 	}
 
 	go func() {
-		if err := srv.ListenAndServeTLS(".ca/mycert1.cer", ".ca/mycert1.key"); err != nil {
+		if err := srv.ListenAndServe(); err != nil {
 			log.Printf("listen: %v\n", err)
 		}
 	}()
