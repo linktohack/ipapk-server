@@ -3,8 +3,8 @@ package conf
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/utils"
 	"io/ioutil"
-	"ipapk-server/utils"
 )
 
 var AppConfig *Config

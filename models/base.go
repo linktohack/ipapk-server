@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"ipapk-server/conf"
+	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/conf"
 )
 
 var orm *gorm.DB
