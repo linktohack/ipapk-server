@@ -38,7 +38,6 @@ func main() {
 
 	router.Static("app", ".data")
 	router.Static("static", "public/static")
-	router.StaticFile("myCA.cer", ".ca/myCA.cer")
 
 	router.POST("/upload", middleware.Upload)
 	router.GET("/bundle/:uuid", middleware.GetBundle)
