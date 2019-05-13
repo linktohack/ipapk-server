@@ -11,7 +11,7 @@ var orm *gorm.DB
 
 func InitDB() error {
 	var err error
-	orm, err = gorm.Open("sqlite", conf.AppConfig.Database)
+	orm, err = gorm.Open("sqlite3", conf.AppConfig.Database)
 	if err != nil {
 		return err
 	}
