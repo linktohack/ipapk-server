@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  app:
+    image: registry.ql6625.fr/ipapk-server:1
+    volume:
+      - /home/dev/fr_6625_apps/data:/ipapk/.data
+      - /home/dev/fr_6625_apps/db.sqlite3:/ipapk/db.sqlite3
+    networks:
+      - web
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.port=8080
+        - traefik.frontend.rule=Host:apps.ql6625.fr
+
+networks:
+  web:
+    external: true

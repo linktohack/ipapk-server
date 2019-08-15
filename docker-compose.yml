@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    image: registry.ql6625.fr/ipapk-server:1
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - ./.data:/ipapk/.data
+      - ./db.sqlite3:/ipapk/db.sqlite3
