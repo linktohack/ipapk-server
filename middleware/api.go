@@ -142,6 +142,34 @@ func GetBundle(c *gin.Context) {
 	})
 }
 
+func GetBundles(c *gin.Context) {
+	bundles, err := models.GetBundles()
+	if err != nil {
+		return
+	}
+
+	type BundleJSON1 struct {
+		Bundle     models.Bundle `json:"bundle"`
+		InstallUrl string        `json:"installUrl"`
+		QrCodeUrl  string        `json:"qrCodeUrl"`
+		IconUrl    string        `json:"iconUrl"`
+	}
+
+	var bundles1 []BundleJSON1
+	for _, bundle := range bundles {
+		bundles1 = append(bundles1, BundleJSON1{
+			Bundle:     *bundle,
+			InstallUrl: bundle.GetInstallUrl(conf.AppConfig.ProxyURL()),
+			QrCodeUrl:  conf.AppConfig.ProxyURL() + "/qrcode/" + bundle.UUID,
+			IconUrl:    conf.AppConfig.ProxyURL() + "/icon/" + bundle.UUID,
+		})
+	}
+
+	c.HTML(http.StatusOK, "list.html", gin.H{
+		"bundles1": bundles1,
+	})
+}
+
 func GetVersions(c *gin.Context) {
 	_uuid := c.Param("uuid")
 

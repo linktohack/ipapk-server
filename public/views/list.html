@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>Application</title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="/static/css/app.min.css">
+</head>
+<body>
+<div class="container">
+    {{ range .bundles1 }}
+    <div class="page">
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">{{ .Bundle.Name }} ({{ .Bundle.PlatformType }})</div>
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_appmsg">
+                    <div class="weui-media-box__hd">
+                        <img class="weui-media-box__thumb" src="{{ .IconUrl }}" alt="">
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <p class="weui-media-box__desc">Name: {{ .Bundle.Name }}</p>
+                        <p class="weui-media-box__desc">Version: {{ .Bundle.Version }} ({{ .Bundle.Build }})</p>
+                        <p class="weui-media-box__desc">Platform: {{ .Bundle.PlatformType }}</p>
+                        <p class="weui-media-box__desc">Size: {{.Bundle.Size | formatBinary }}</p>
+                        <p class="weui-media-box__desc">Created At: {{.Bundle.CreatedAt | formatTime }}</p>
+                        <p class="weui-media-box__desc">Downloads: {{.Bundle.Downloads }}</p>
+                    </div>
+                </div>
+                <div class="weui-media-box weui-media-box_text">
+                    <div class="weui-media-box__bd">
+                        <h4 class="weui-media-box__title">Change Logs</h4>
+                        {{ if .Bundle.ChangeLog }}
+                        {{ range .Bundle.ChangeLog | formatLog | previewLog }}
+                        <p class="weui-media-box__desc">{{ . }}</p>
+                        {{ end }}
+                        {{ else }}
+                        <p class="weui-media-box__desc">None</p>
+                        {{ end }}
+                        {{ if gt ( len ( .Bundle.ChangeLog | formatLog ) ) 3 }}
+                        <ul class="weui-media-box__info">
+                            <li class="weui-media-box__info__meta">
+                                <a href="/log/{{ .Bundle.UUID }}" class="weui-media-box__info__meta__link">Change Logs</a>
+                            </li>
+                        </ul>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+            <div class="weui-panel__ft">
+                <a href="/version/{{ .Bundle.UUID }}" class="weui-cell weui-cell_access weui-cell_link">
+                    <div class="weui-cell__bd">All Versions</div>
+                    <span class="weui-cell__ft"></span>
+                </a>
+            </div>
+        </div>
+        <div class="page__bd page__bd_spacing">
+            <a href="{{ .InstallUrl | safeURL }}" class="weui-btn weui-btn_primary">Install</a>
+            <div class="weui-loadmore weui-loadmore_line">
+                <span class="weui-loadmore__tips">QR Code</span>
+            </div>
+            <div class="qr-wrapper">
+                <div class="qr">
+                    <img src="{{ .QrCodeUrl }}">
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ end }}
+    <div class="page">
+        <div class="page__bd page__bd_spacing">
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input name="file" class="weui-input" type="file" placeholder="Upload"/>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <textarea name="changelog" class="weui-textarea" placeholder="Change Log" rows="3"></textarea>
+                        <div class="weui-textarea-counter"><span>0</span>/200</div>
+                    </div>
+                </div>                
+            </div>
+            </form>
+            <a href="javascript:upload();" class="weui-btn weui-btn_primary">Submit</a>
+        </div>
+    </div>
+    <div class="page">
+        <div class="weui-footer">
+            <p class="weui-footer__text">Copyright &copy; ipapk</p>
+        </div>
+    </div>            
+</div>
+<script type="text/javascript">
+    function upload() {
+        document.querySelector('form').submit();
+    }
+</script>
+</body>
+</html>

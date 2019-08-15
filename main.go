@@ -40,6 +40,7 @@ func main() {
 	router.Static("static", "public/static")
 
 	router.POST("/upload", middleware.Upload)
+	router.GET("/", middleware.GetBundles)
 	router.GET("/bundle/:uuid", middleware.GetBundle)
 	router.GET("/log/:uuid", middleware.GetChangelog)
 	router.GET("/qrcode/:uuid", middleware.GetQRCode)

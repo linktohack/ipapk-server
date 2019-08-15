@@ -88,6 +88,13 @@ func GetBundleByUID(uuid string) (*Bundle, error) {
 	return &bundle, err
 }
 
+func GetBundles() ([]*Bundle, error) {
+	var bundles []*Bundle
+
+	err := orm.Raw("SELECT * FROM (SELECT * FROM bundles ORDER BY created_at DESC) GROUP BY bundle_id, platform_type").Scan(&bundles).Error
+	return bundles, err
+}
+
 func (bundle *Bundle) UpdateBundle(field string, value interface{}) error {
 	err := orm.Model(&bundle).Update(field, value).Error
 	return err
