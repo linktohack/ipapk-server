@@ -69,6 +69,9 @@
     </div>
     {{ end }}
     <div class="page">
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">Upload a new version</div>
+        </div>
         <div class="page__bd page__bd_spacing">
             <form method="POST" action="/upload" enctype="multipart/form-data">
             <div class="weui-cells weui-cells_form">
@@ -85,7 +88,7 @@
                 </div>                
             </div>
             </form>
-            <a href="javascript:upload();" class="weui-btn weui-btn_primary">Submit</a>
+            <a href="javascript:;" class="weui-btn weui-btn_primary upload-btn">Submit</a>
         </div>
     </div>
     <div class="page">
@@ -95,9 +98,42 @@
     </div>            
 </div>
 <script type="text/javascript">
+    const uploadBtn = document.querySelector('.upload-btn');
+    let uploading = false;
     function upload() {
-        document.querySelector('form').submit();
+        if (uploading) {
+            return;
+        }
+        uploading = true;
+        uploadBtn.className += ' weui-btn_disabled'
+
+        const formData = new FormData();
+
+        formData.append('file', document.querySelector('input[name=file]').files[0]);
+        formData.append('changelog', document.querySelector('textarea[name=changelog]').value);
+
+        const options = {
+            method: 'POST',
+            body: formData,
+        };
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(it => it.text())
+        .then(it => JSON.parse(it))
+        .then(it => {
+            location.href = `/bundle/${it.uuid}`;
+            uploading = false;
+        })
+        .catch(error => {
+            alert(error.message);
+            uploading = false;
+            uploadBtn.className = uploadBtn.className.split(' ').filter(it => it !== 'weui-btn_disabled').join(' ');
+        });
     }
+    uploadBtn.addEventListener('click', upload);
 </script>
 </body>
 </html>

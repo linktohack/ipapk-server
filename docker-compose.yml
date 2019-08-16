@@ -9,3 +9,7 @@ services:
     volumes:
       - ./.data:/ipapk/.data
       - ./db.sqlite3:/ipapk/db.sqlite3
+      - ./public:/ipapk/public
+    environment:
+      - VIRTUAL_HOST=apps.docker
+      - VIRTUAL_PORT=8080
