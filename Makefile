@@ -10,7 +10,7 @@ $(PLATFORMS):
 release: windows linux darwin
 
 deploy:
-# 	docker-compose build
-# 	docker-compose push
+	docker-compose build
+	docker-compose push
 	rsync -aP -e 'ssh -S none' stack.yml config.json dev@ql6625.fr:fr.ql6625.apps
 	ssh dev@ql6625.fr 'cd fr.ql6625.apps && docker stack deploy --with-registry-auth -c stack.yml fr_ql6625_apps'

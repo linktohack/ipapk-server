@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app:
-    image: registry.ql6625.fr/ipapk-server:1
+    image: registry.ql6625.fr/ipapk-server:2
     volumes:
       - /home/dev/fr.ql6625.apps/data:/ipapk/.data
       - /home/dev/fr.ql6625.apps/db.sqlite3:/ipapk/db.sqlite3
