@@ -97,7 +97,7 @@ func GetBundles() ([]*Bundle, error) {
 func GetBundlesByBundleId(bundleId string) ([]*Bundle, error) {
 	var bundles []*Bundle
 
-	err := orm.Raw("SELECT * FROM (SELECT * FROM bundles WHERE bundle_id = ? ORDER BY created_at DESC) GROUP BY bundle_id, platform_type ORDER BY created_at DESC", bundleId).Scan(&bundles).Error
+	err := orm.Where("bundle_id = ?", bundleId).Order("created_at DESC").Find(&bundles).Error
 	return bundles, err
 }
 

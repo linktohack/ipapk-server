@@ -9,6 +9,7 @@ $(PLATFORMS):
 .PHONY: release
 release: windows linux darwin
 
+.PHONY: deploy
 deploy:
 	docker-compose build
 	docker-compose push

@@ -32,6 +32,5 @@ func (c *Config) Addr() string {
 }
 
 func (c *Config) ProxyURL() string {
-
 	return c.Proxy
 }

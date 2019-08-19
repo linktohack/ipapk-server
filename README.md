@@ -3,16 +3,11 @@ IPA & APK server
 
 # Build & deploy
 ```sh
-go get github.com/sharljimhtsin/ipapk-server-fixed-pkg-error
-cd $GOPATH/src/github.com/sharljimhtsin/ipapk-server-fixed-pkg-error
-git remote add upstream github.com/sharljimhtsin/ipapk-server-fixed-pkg-error
-git remote set-url origin https://git.ql6625.fr/QL6625/ipapk-server
-git pull
+go get github.com/linktohack/ipapk-server
 make linux
+# or build & deploy via docker
 make deploy
 ```
-
-Or go ahead and modify all go dependencies to our repos...
 
 # Config
 `config.json`
@@ -47,8 +42,8 @@ response:
     "downloads": 0
 }
 ```
-Command line:
+With ommand line:
 ```sh
 curl -X POST https://apps.ql6625.fr/upload -F "file=@test.ipa" -F "changelog=123"
 ```
-Web interface at the end of home page
+Or using web interface at the end of home page.

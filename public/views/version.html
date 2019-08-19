@@ -15,9 +15,9 @@
             {{ range .bundleWithExtras }}
             <a class="weui-cell weui-cell_access" href="/bundle/{{ .Bundle.UUID }}">
                 <div class="weui-cell__bd">
-                    <p>{{ .Bundle.Version }}</p>
+                    <p>{{ .Bundle.Version }} ({{ .Bundle.Build }}) ({{ .Bundle.PlatformType }}) </p>
                 </div>
-                <div class="weui-cell__ft">{{ .Bundle.PlatformType }}</div>
+                <div class="weui-cell__ft">{{ .Bundle.CreatedAt | formatTime }}</div>
             </a>
             {{end}}
         </div>

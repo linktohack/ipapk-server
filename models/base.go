@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/conf"
+	"github.com/linktohack/ipapk-server/conf"
 )
 
 var orm *gorm.DB

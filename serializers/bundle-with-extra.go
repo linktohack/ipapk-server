@@ -1,7 +1,7 @@
 package serializers
 
 import (
-	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/models"
+	"github.com/linktohack/ipapk-server/models"
 )
 
 type BundleWithExtraJSON struct {
