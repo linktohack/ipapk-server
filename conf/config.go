@@ -3,7 +3,6 @@ package conf
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/utils"
 	"io/ioutil"
 )
 
@@ -33,12 +32,6 @@ func (c *Config) Addr() string {
 }
 
 func (c *Config) ProxyURL() string {
-	if c.Proxy == "" {
-		localIp, err := utils.LocalIP()
-		if err != nil {
-			panic(err)
-		}
-		return fmt.Sprintf("https://%v:%v", localIp.String(), c.Port)
-	}
+
 	return c.Proxy
 }
