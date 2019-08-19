@@ -1,7 +1,6 @@
 package models
 
 import (
-	"sort"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -95,6 +94,13 @@ func GetBundles() ([]*Bundle, error) {
 	return bundles, err
 }
 
+func GetBundlesByBundleId(bundleId string) ([]*Bundle, error) {
+	var bundles []*Bundle
+
+	err := orm.Raw("SELECT * FROM (SELECT * FROM bundles WHERE bundle_id = ? ORDER BY created_at DESC) GROUP BY bundle_id, platform_type ORDER BY created_at DESC", bundleId).Scan(&bundles).Error
+	return bundles, err
+}
+
 func (bundle *Bundle) UpdateBundle(field string, value interface{}) error {
 	err := orm.Model(&bundle).Update(field, value).Error
 	return err
@@ -116,29 +122,6 @@ func (bundle *Bundle) UpdateDownload() {
 	atomic.AddUint64(&val, 1)
 	bundle.UpdateBundle("downloads", val)
 	rpl.Unlock()
-}
-
-func (bundle *Bundle) GetVersions() (VersionInfo, error) {
-	results := make(VersionInfo, 0)
-
-	rows, err := orm.Table("bundles").Select("version, count(DISTINCT build) AS builds").
-		Where("bundle_id = ? AND platform_type= ?", bundle.BundleId, int(bundle.PlatformType)).Group("version").Rows()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var version string
-		var builds int
-		if err := rows.Scan(&version, &builds); err != nil {
-			return nil, err
-		}
-		results = append(results, vInfo{version, builds})
-	}
-	sort.Sort(results)
-
-	return results, nil
 }
 
 func (bundle *Bundle) GetBuilds(version string) ([]*Bundle, error) {

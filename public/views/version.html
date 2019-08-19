@@ -12,12 +12,12 @@
     <div class="page">
         <div class="weui-cells__title">All Versions</div>
         <div class="weui-cells">
-            {{ range .versions }}
-            <a class="weui-cell weui-cell_access" href="/version/{{ $.uuid }}/{{ .Version }}">
+            {{ range .bundleWithExtras }}
+            <a class="weui-cell weui-cell_access" href="/bundle/{{ .Bundle.UUID }}">
                 <div class="weui-cell__bd">
-                    <p>{{ .Version }}</p>
+                    <p>{{ .Bundle.Version }}</p>
                 </div>
-                <div class="weui-cell__ft">{{ .Builds }}</div>
+                <div class="weui-cell__ft">{{ .Bundle.PlatformType }}</div>
             </a>
             {{end}}
         </div>

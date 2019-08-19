@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container">
-    {{ range .bundles1 }}
+    {{ range .bundleWithExtras }}
     <div class="page">
         <div class="weui-panel weui-panel_access">
             <div class="weui-panel__hd">{{ .Bundle.Name }} ({{ .Bundle.PlatformType }})</div>
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="weui-panel__ft">
-                <a href="/version/{{ .Bundle.UUID }}" class="weui-cell weui-cell_access weui-cell_link">
+                <a href="/version/{{ .Bundle.BundleId }}" class="weui-cell weui-cell_access weui-cell_link">
                     <div class="weui-cell__bd">All Versions</div>
                     <span class="weui-cell__ft"></span>
                 </a>

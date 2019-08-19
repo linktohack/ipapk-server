@@ -148,16 +148,9 @@ func GetBundles(c *gin.Context) {
 		return
 	}
 
-	type BundleJSON1 struct {
-		Bundle     models.Bundle `json:"bundle"`
-		InstallUrl string        `json:"installUrl"`
-		QrCodeUrl  string        `json:"qrCodeUrl"`
-		IconUrl    string        `json:"iconUrl"`
-	}
-
-	var bundles1 []BundleJSON1
+	var bundleWithExtras []serializers.BundleWithExtraJSON
 	for _, bundle := range bundles {
-		bundles1 = append(bundles1, BundleJSON1{
+		bundleWithExtras = append(bundleWithExtras, serializers.BundleWithExtraJSON{
 			Bundle:     *bundle,
 			InstallUrl: bundle.GetInstallUrl(conf.AppConfig.ProxyURL()),
 			QrCodeUrl:  conf.AppConfig.ProxyURL() + "/qrcode/" + bundle.UUID,
@@ -166,62 +159,30 @@ func GetBundles(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "list.html", gin.H{
-		"bundles1": bundles1,
+		"bundleWithExtras": bundleWithExtras,
 	})
 }
 
 func GetVersions(c *gin.Context) {
-	_uuid := c.Param("uuid")
+	_bundleId := c.Param("bundle_id")
 
-	bundle, err := models.GetBundleByUID(_uuid)
+	bundles, err := models.GetBundlesByBundleId(_bundleId)
 	if err != nil {
 		return
 	}
 
-	versions, err := bundle.GetVersions()
-	if err != nil {
-		return
-	}
-
-	c.HTML(http.StatusOK, "version.html", gin.H{
-		"versions": versions,
-		"uuid":     bundle.UUID,
-	})
-}
-
-func GetBuilds(c *gin.Context) {
-	_uuid := c.Param("uuid")
-	version := c.Param("ver")
-
-	bundle, err := models.GetBundleByUID(_uuid)
-	if err != nil {
-		return
-	}
-
-	builds, err := bundle.GetBuilds(version)
-	if err != nil {
-		return
-	}
-
-	var bundles []serializers.BundleJSON
-	for _, v := range builds {
-		bundles = append(bundles, serializers.BundleJSON{
-			UUID:       v.UUID,
-			Name:       v.Name,
-			Platform:   v.PlatformType.String(),
-			BundleId:   v.BundleId,
-			Version:    v.Version,
-			Build:      v.Build,
-			InstallUrl: v.GetInstallUrl(conf.AppConfig.ProxyURL()),
-			QRCodeUrl:  conf.AppConfig.ProxyURL() + "/qrcode/" + v.UUID,
-			IconUrl:    conf.AppConfig.ProxyURL() + "/icon/" + v.UUID,
-			Changelog:  bundle.ChangeLog,
-			Downloads:  v.Downloads,
+	var bundleWithExtras []serializers.BundleWithExtraJSON
+	for _, bundle := range bundles {
+		bundleWithExtras = append(bundleWithExtras, serializers.BundleWithExtraJSON{
+			Bundle:     *bundle,
+			InstallUrl: bundle.GetInstallUrl(conf.AppConfig.ProxyURL()),
+			QrCodeUrl:  conf.AppConfig.ProxyURL() + "/qrcode/" + bundle.UUID,
+			IconUrl:    conf.AppConfig.ProxyURL() + "/icon/" + bundle.UUID,
 		})
 	}
 
-	c.HTML(http.StatusOK, "build.html", gin.H{
-		"builds": bundles,
+	c.HTML(http.StatusOK, "version.html", gin.H{
+		"bundleWithExtras": bundleWithExtras,
 	})
 }
 

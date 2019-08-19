@@ -48,8 +48,7 @@ func main() {
 	router.GET("/plist/:uuid", middleware.GetPlist)
 	router.GET("/ipa/:uuid", middleware.DownloadAPP)
 	router.GET("/apk/:uuid", middleware.DownloadAPP)
-	router.GET("/version/:uuid", middleware.GetVersions)
-	router.GET("/version/:uuid/:ver", middleware.GetBuilds)
+	router.GET("/version/:bundle_id", middleware.GetVersions)
 
 	srv := &http.Server{
 		Addr:    conf.AppConfig.Addr(),
