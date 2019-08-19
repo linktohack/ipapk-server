@@ -4,8 +4,9 @@ services:
   app:
     image: registry.ql6625.fr/ipapk-server:2
     volumes:
-      - /home/dev/fr.ql6625.apps/data:/ipapk/.data
-      - /home/dev/fr.ql6625.apps/db.sqlite3:/ipapk/db.sqlite3
+      - /home/dev/fr.ql6625.apps/config.json:/ipapk/config.json
+      - /home/dev/fr.ql6625.apps/data/data:/ipapk/.data
+      - /home/dev/fr.ql6625.apps/data/db.sqlite3:/ipapk/db.sqlite3
     networks:
       - web
     deploy:
@@ -14,7 +15,7 @@ services:
           - node.role == manager
       labels:
         - traefik.port=8080
-        - traefik.frontend.rule=Host:apps.ql6625.fr
+        - traefik.frontend.rule=Host:apps.ql6625.fr,ipa.ql6625.fr,apk.ql6625.fr
 
 networks:
   web:
