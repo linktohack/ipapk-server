@@ -1,9 +1,11 @@
-version: '3'
+version: '3.4'
 
 services:
   app:
     image: registry.ql6625.fr/ipapk-server:2
-    build: .
+    build:
+      context: ../../../../..
+      dockerfile: ./go/src/github.com/sharljimhtsin/ipapk-server-fixed-pkg-error/Dockerfile
     ports:
       - 8080:8080
     volumes:
