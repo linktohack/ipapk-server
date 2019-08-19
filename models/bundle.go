@@ -91,7 +91,7 @@ func GetBundleByUID(uuid string) (*Bundle, error) {
 func GetBundles() ([]*Bundle, error) {
 	var bundles []*Bundle
 
-	err := orm.Raw("SELECT * FROM (SELECT * FROM bundles ORDER BY created_at DESC) GROUP BY bundle_id, platform_type").Scan(&bundles).Error
+	err := orm.Raw("SELECT * FROM (SELECT * FROM bundles ORDER BY created_at DESC) GROUP BY bundle_id, platform_type ORDER BY created_at DESC").Scan(&bundles).Error
 	return bundles, err
 }
 
